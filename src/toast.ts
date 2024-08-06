@@ -1,4 +1,4 @@
-// src/toast.ts
+import { react } from "@vitejs/plugin-react";
 import { useToast } from "./Contexts/ToastContext";
 
 const useToastFunctions = () => {

@@ -1,4 +1,3 @@
-// src/App.tsx
 import React from "react";
 import { ToastProvider, useToast } from "./Contexts/ToastContext";
 import { Button } from "./components/Button";

@@ -1,4 +1,3 @@
-// src/components/Toast.tsx
 import React from "react";
 
 export type ToastProps = {
