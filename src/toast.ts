@@ -1,24 +1,20 @@
-import { react } from "@vitejs/plugin-react";
-import { useToast } from "./Contexts/ToastContext";
+// src/toast.ts
+import { toastManager } from "./components/ToastManager";
 
-const useToastFunctions = () => {
-  const { addToast, clearAllToasts } = useToast();
-
-  const toast = (message: string) => {
-    addToast({ message, variant: "default", onClose: () => {} });
-  };
-
-  toast.success = (message: string) => {
-    addToast({ message, variant: "success", onClose: () => {} });
-  };
-
-  toast.error = (message: string) => {
-    addToast({ message, variant: "error", onClose: () => {} });
-  };
-
-  toast.dismissAll = clearAllToasts;
-
-  return toast;
+// Global function to show a toast
+export const showToast = (
+  message: string,
+  variant: "default" | "success" | "error" = "default"
+) => {
+  toastManager.addToast({ message, variant });
 };
 
-export default useToastFunctions;
+// Global function to remove a toast by ID
+export const removeToast = (id: number) => {
+  toastManager.removeToast(id);
+};
+
+// Global function to clear all toasts
+export const clearAllToasts = () => {
+  toastManager.clearAllToasts();
+};

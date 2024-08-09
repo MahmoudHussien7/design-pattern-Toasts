@@ -1,10 +1,20 @@
-import React from "react";
-import { ToastProvider, useToast } from "./Contexts/ToastContext";
+import React, { useState, useEffect } from "react";
 import { Button } from "./components/Button";
 import { ToastContainer } from "./components/ToastContainer";
+import { toastManager } from "./components/ToastManager";
 
 const App: React.FC = () => {
-  const { addToast, clearAllToasts } = useToast();
+  const [toasts, setToasts] = useState([]);
+
+  // Subscribe to the toastManager on mount
+  useEffect(() => {
+    toastManager.subscribe(setToasts);
+
+    // Cleanup on unmount
+    return () => {
+      toastManager.unsubscribe(setToasts);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col items-center space-y-10">
@@ -13,37 +23,42 @@ const App: React.FC = () => {
       <div className="space-x-2">
         <Button
           onClick={() =>
-            addToast({ message: "Default toast message", variant: "default" })
+            toastManager.addToast({
+              message: "Default toast message",
+              variant: "default",
+            })
           }
         >
           Default
         </Button>
         <Button
           onClick={() =>
-            addToast({ message: "Success toast message", variant: "success" })
+            toastManager.addToast({
+              message: "Success toast message",
+              variant: "success",
+            })
           }
         >
           Success ✅
         </Button>
         <Button
           onClick={() =>
-            addToast({ message: "Error toast message", variant: "error" })
+            toastManager.addToast({
+              message: "Error toast message",
+              variant: "error",
+            })
           }
         >
           Error ❌
         </Button>
-        <Button onClick={clearAllToasts}>Clear All 🗑️</Button>
+        <Button onClick={() => toastManager.clearAllToasts()}>
+          Clear All 🗑️
+        </Button>
       </div>
 
-      <ToastContainer />
+      <ToastContainer toasts={toasts} />
     </div>
   );
 };
 
-const WrappedApp: React.FC = () => (
-  <ToastProvider>
-    <App />
-  </ToastProvider>
-);
-
-export default WrappedApp;
+export default App;
